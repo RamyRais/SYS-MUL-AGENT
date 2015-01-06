@@ -1,5 +1,7 @@
 package usine;
 
+import java.io.IOException;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -8,6 +10,7 @@ import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 
 public class FournisseurCheneAgent extends Agent {
 
@@ -20,20 +23,32 @@ public class FournisseurCheneAgent extends Agent {
 			}
 		});
 	}
+	
 	public void recieveMessage(){
 		ACLMessage msg = receive();
 		if (msg != null) {
-			//type+" chene "+quantite+" "+reciever
-			String content = msg.getContent();
-			this.envoiApprovisonnement(content, msg.getSender().getLocalName());
+			try {
+				MessageApprovisonnement approv = (MessageApprovisonnement) msg.getContentObject();
+				//doWait(X); X temps pour préparer le bois 
+				this.envoiApprovisonnement(approv,msg.getSender().getLocalName());
+			} catch (UnreadableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public void envoiApprovisonnement(String content, String reciever){
+	public void envoiApprovisonnement(MessageApprovisonnement approv, String reciever){
 		ACLMessage msg = new ACLMessage(ACLMessage.CONFIRM);
 		msg.addReceiver(new AID(reciever, AID.ISLOCALNAME));
-		msg.setContent(content);
-		send(msg);
+		try {
+			msg.setContentObject(approv);
+			send(msg);
+			System.out.println("envoie lil approv");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void publierService(String type, String name) {

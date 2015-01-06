@@ -61,6 +61,7 @@ public class Atelier1Agent extends Agent{
 				MessageCommande commandes = null;
 				try {
 					commandes = (MessageCommande)	msg.getContentObject();
+					//doWait(X); X temps pour traiter le commande
 					this.traitementCommande(commandes);
 				} catch (UnreadableException e) {
 					// TODO Auto-generated catch block
@@ -68,6 +69,16 @@ public class Atelier1Agent extends Agent{
 				}
 			}else if(msg.getSender().getLocalName().equals("approvisonnement")){
 				//TODO reception du msg de l'approvisonnement
+				MessageApprovisonnement approv = null;
+				try {
+					approv = (MessageApprovisonnement) msg.getContentObject();
+					MessageCommande com = approv.getCommande();
+					//doWait(X); X temps pour fabriquer l'elt
+					this.envoiCommandeCommercial(com);
+				} catch (UnreadableException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

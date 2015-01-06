@@ -23,13 +23,6 @@ public class ApprovisionnementAgent extends Agent {
 		});
 	}
 	
-	public void envoiAtelier(String message,String reciever){
-		ACLMessage msg = new ACLMessage(ACLMessage.CONFIRM);
-		msg.addReceiver(new AID(reciever, AID.ISLOCALNAME));
-		msg.setContent(message);
-		send(msg);
-	}
-	
 	public void recieveMessage(){
 		ACLMessage msg = receive();
 		if (msg != null) {
@@ -37,8 +30,17 @@ public class ApprovisionnementAgent extends Agent {
 			try {
 				appro = (MessageApprovisonnement) msg.getContentObject();
 			
-			if(msg.getSender().getLocalName().equals("fournisseur")){
-				
+			if(msg.getSender().getLocalName().contains("fournisseur")){
+				System.out.println("jatni msg mil fournisseur");
+				if(appro.getBois().contains("chene")){
+					this.envoiAtelier(appro, "atelier1");
+				}
+				else if(appro.getBois().contains("merisier")){
+					this.envoiAtelier(appro, "atelier2");
+				}
+				else if(appro.getBois().contains("noyer")){
+					this.envoiAtelier(appro, "atelier3");
+				}
 			}else if(msg.getSender().getLocalName().contains("atelier")){
 				//type+" chene "+quantite+" "+reciever
 				if (appro.getBois().contains("chene")){
@@ -80,5 +82,16 @@ public class ApprovisionnementAgent extends Agent {
 		}
 		send(msg);
 	}
-
+	
+	public void envoiAtelier(MessageApprovisonnement approv, String reciever){
+		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+		msg.addReceiver(new AID(reciever, AID.ISLOCALNAME));
+		try {
+			msg.setContentObject(approv);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		send(msg);
+	}
 }
