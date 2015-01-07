@@ -50,6 +50,20 @@ public class ApprovisionnementAgent extends Agent {
 					// ou on peut ajouter un truc de prix
 					envoiFournisseur(appro,fournisseur[0].getName().getLocalName());
 				}
+				else if (appro.getBois().contains("merisier")){
+					//TODO recherche fournisseur de chene
+					DFAgentDescription[] fournisseur = chercherService("vente merisier");
+					//TODO pour ameliorer ajouter un truc de random por choisir le fournisseur
+					// ou on peut ajouter un truc de prix
+					envoiFournisseur(appro,fournisseur[0].getName().getLocalName());
+				}
+				else if (appro.getBois().contains("noyer")){
+					//TODO recherche fournisseur de chene
+					DFAgentDescription[] fournisseur = chercherService("vente noyer");
+					//TODO pour ameliorer ajouter un truc de random por choisir le fournisseur
+					// ou on peut ajouter un truc de prix
+					envoiFournisseur(appro,fournisseur[0].getName().getLocalName());
+				}
 			}
 		} catch (UnreadableException e) {
 			// TODO Auto-generated catch block

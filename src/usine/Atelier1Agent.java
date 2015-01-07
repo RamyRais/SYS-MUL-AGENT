@@ -14,7 +14,7 @@ public class Atelier1Agent extends Agent{
 	private static final int MAX_STOCK_TABLE = 20;
 	private static final int MAX_STOCK_CHAISE = 120; 
 	private static final int MAX_STOCK_BUFFET = 20;
-	private static final int PLANCHE_TABLE = 5;
+	private static final int PLANCHE_LIT = 5;
 	private static final int PLANCHE_CHAISE = 2;
 	private static final int PLANCHE_BUFFET = 6;
 	private int table;
@@ -33,25 +33,7 @@ public class Atelier1Agent extends Agent{
 			}
 		});
 		
-		addBehaviour(new CyclicBehaviour(this) {
-			@Override
-			public void action() {
-				// TODO Auto-generated method stub
-				stockVide();
-			}
-		});
-	}
-	
-	public void stockVide(){
-		if(this.table==0){
-			//TODO approvisonnement
-		}
-		if(this.chaise==0){
-			//TODO approvisonnement
-		}
-		if(this.buffet==0){
-			//TODO approvisonnement
-		}
+		
 	}
 	
 	public void recuCommande(){
@@ -74,6 +56,18 @@ public class Atelier1Agent extends Agent{
 					approv = (MessageApprovisonnement) msg.getContentObject();
 					MessageCommande com = approv.getCommande();
 					//doWait(X); X temps pour fabriquer l'elt
+					String s = approv.getCommande().getCommandes().get(0);
+					String[] s1 = s.split(" ");
+					if(s1[0].contains("table")){
+						this.table = this.MAX_STOCK_TABLE;
+					}
+					if(s1[0].contains("chaise")){
+						this.chaise = this.MAX_STOCK_CHAISE;
+					}
+					if(s1[0].contains("buffet")){
+						this.buffet = this.MAX_STOCK_BUFFET;
+					}
+					
 					this.envoiCommandeCommercial(com);
 				} catch (UnreadableException e) {
 					// TODO Auto-generated catch block
@@ -116,7 +110,7 @@ public class Atelier1Agent extends Agent{
 	private void traitementCommandeTable(MessageCommande commandes){
 		ArrayList<String> com = commandes.getCommandes();
 		String[] s = com.get(0).split(" ");
-			if(Integer.parseInt(s[1]) <= this.table ){
+			if(Integer.parseInt(s[1]) < this.table ){
 				// TODO envoi commande au commercial avec déc du nombre des tables du stock
 				this.table -= Integer.parseInt(s[1]);
 				this.envoiCommandeCommercial(commandes);			
@@ -125,7 +119,7 @@ public class Atelier1Agent extends Agent{
 				MessageApprovisonnement appro = new MessageApprovisonnement();
 				appro.setCommande(commandes);
 				appro.setBois("chene");
-				appro.setQuantite(Integer.parseInt(s[1])*Atelier1Agent.PLANCHE_TABLE);
+				appro.setQuantite(Integer.parseInt(s[1]+this.MAX_STOCK_TABLE)*Atelier1Agent.PLANCHE_LIT);
 				this.approChene(appro);
 			}
 	}
@@ -133,7 +127,7 @@ public class Atelier1Agent extends Agent{
 	private void traitementCommandeChaise(MessageCommande commandes){
 		ArrayList<String> com = commandes.getCommandes();
 		String[] s = com.get(0).split(" ");
-			if(Integer.parseInt(s[1]) <= this.table ){
+			if(Integer.parseInt(s[1]) < this.chaise ){
 				// TODO envoi commande au commercial avec déc du nombre des chaises du stock
 				this.chaise -= Integer.parseInt(s[1]);
 				this.envoiCommandeCommercial(commandes);			
@@ -142,7 +136,7 @@ public class Atelier1Agent extends Agent{
 				MessageApprovisonnement appro = new MessageApprovisonnement();
 				appro.setCommande(commandes);
 				appro.setBois("chene");
-				appro.setQuantite(Integer.parseInt(s[1])*Atelier1Agent.PLANCHE_CHAISE);
+				appro.setQuantite(Integer.parseInt(s[1]+this.MAX_STOCK_CHAISE)*Atelier1Agent.PLANCHE_CHAISE);
 				this.approChene(appro);
 			}
 	}
@@ -150,7 +144,7 @@ public class Atelier1Agent extends Agent{
 	private void traitementCommandeBuffet(MessageCommande commandes){
 		ArrayList<String> com = commandes.getCommandes();
 		String[] s = com.get(0).split(" ");
-			if(Integer.parseInt(s[1]) <= this.table ){
+			if(Integer.parseInt(s[1]) <= this.buffet ){
 				// TODO envoi commande au commercial avec déc du nombre des buffets du stock
 				this.buffet -= Integer.parseInt(s[1]);
 				this.envoiCommandeCommercial(commandes);			
@@ -159,7 +153,7 @@ public class Atelier1Agent extends Agent{
 				MessageApprovisonnement appro = new MessageApprovisonnement();
 				appro.setCommande(commandes);
 				appro.setBois("chene");
-				appro.setQuantite(Integer.parseInt(s[1])*Atelier1Agent.PLANCHE_BUFFET);
+				appro.setQuantite(Integer.parseInt(s[1]+this.MAX_STOCK_BUFFET)*Atelier1Agent.PLANCHE_BUFFET);
 				this.approChene(appro);
 				
 			}

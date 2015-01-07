@@ -29,9 +29,9 @@ public class MessageCommande implements Serializable{
 		this.commandes = commandes;
 	}
 	
-	public String toString(){
-		return "Nom client: "+this.nomClient +":\nCommandes: "+ this.commandes.toString();
-		
-	}
+//	public String toString(){
+//		return "Nom client: "+this.nomClient +":\nCommandes: "+ this.commandes.toString();
+//		
+//	}
 	
 }

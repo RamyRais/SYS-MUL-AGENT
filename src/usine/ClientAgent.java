@@ -15,21 +15,19 @@ public class ClientAgent extends Agent {
 	
 	protected void setup(){
 		doWait(15000);
-		Object param[] = new Object[2];
-		int quantite;
-		String type;
+		Object param[] = new Object[1];
 
 		//récupération des arguments de l'agent
 		param = getArguments();
-		type = (String) param[0];
-		quantite = Integer.parseInt(param[1].toString());
 		MessageCommande commande = new MessageCommande();
 		commande.setNomClient(this.getLocalName());
-		ArrayList<String> c = new ArrayList<String>(){{
-			add("table 5");
-			add("table 30");
-			}};
-		commande.setCommandes(c);
+		commande.setCommandes((ArrayList<String>)param[0]);
+//		ArrayList<String> c = new ArrayList<String>(){{
+//			add("table 5");
+//			add("lit 30");
+//			add("banquette 5");
+//			}};
+//		commande.setCommandes(c);
 		this.chercherService("vente meuble",commande);
 	}
 	
