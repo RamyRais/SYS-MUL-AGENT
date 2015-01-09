@@ -31,7 +31,6 @@ public class ApprovisionnementAgent extends Agent {
 				appro = (MessageApprovisonnement) msg.getContentObject();
 			
 			if(msg.getSender().getLocalName().contains("fournisseur")){
-				System.out.println("jatni msg mil fournisseur");
 				if(appro.getBois().contains("chene")){
 					this.envoiAtelier(appro, "atelier1");
 				}

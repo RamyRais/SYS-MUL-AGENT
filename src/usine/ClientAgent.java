@@ -22,21 +22,10 @@ public class ClientAgent extends Agent {
 		MessageCommande commande = new MessageCommande();
 		commande.setNomClient(this.getLocalName());
 		commande.setCommandes((ArrayList<String>)param[0]);
-//		ArrayList<String> c = new ArrayList<String>(){{
-//			add("table 5");
-//			add("lit 30");
-//			add("banquette 5");
-//			}};
-//		commande.setCommandes(c);
 		this.chercherService("vente meuble",commande);
 	}
 	
-	public void passerCommande(){
-		
-	}
-	
-	public void enoyerMessage(String receiver, MessageCommande commande) {
-		System.out.println("acheter meuble j'envoie la commande : "+commande);
+	public void envoieCommande(String receiver, MessageCommande commande) {
 		ACLMessage msg = new ACLMessage(ACLMessage.PROPOSE);
 		msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
 		try {
@@ -45,7 +34,6 @@ public class ClientAgent extends Agent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//msg.setContentObject(s)
 		send(msg);
 	}
 	
@@ -56,7 +44,7 @@ public class ClientAgent extends Agent {
 		dfd.addServices(sd);
 		try {
 			DFAgentDescription[] result = DFService.search(this, dfd);
-			this.enoyerMessage(result[0].getName().getLocalName(), commande);
+			this.envoieCommande(result[0].getName().getLocalName(), commande);
 		} catch (FIPAException e) {
 			e.printStackTrace();
 		}

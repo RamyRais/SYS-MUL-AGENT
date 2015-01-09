@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Atelier3Agent extends Agent {
-
+	
 	private static final int MAX_STOCK_BANQUETTE = 30;
 	private static final int MAX_STOCK_FAUTEUIL = 60;
 	private static final int MAX_STOCK_ETAGERE = 30;

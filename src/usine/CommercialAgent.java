@@ -61,7 +61,6 @@ public class CommercialAgent extends Agent {
 		for (String s : com) {
 			message = message + s + " ";
 		}
-		System.out.println(message);
 		msg.setContent(message);
 		send(msg);
 	}
@@ -107,7 +106,6 @@ public class CommercialAgent extends Agent {
 	}
 	
 	public void envoiCommandeAtelier(String atelier, MessageCommande commande){
-		System.out.println(commande.toString());
 		ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
 		msg.addReceiver(new AID(atelier,AID.ISLOCALNAME));
 		try {

@@ -47,7 +47,6 @@ public class FournisseurNoyerAgent extends Agent {
 		try {
 			msg.setContentObject(approv);
 			send(msg);
-			System.out.println("envoie lil approv");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
